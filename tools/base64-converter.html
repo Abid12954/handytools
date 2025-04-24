@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Converter - Handy Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary-color: #f8fafc;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>') repeat;
+            opacity: 0.1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        .tool-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .tool-description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 150px;
+            background-color: white;
+            transition: all 0.3s ease;
+            font-family: 'Consolas', monospace;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .btn-secondary {
+            background-color: var(--text-light);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--text-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+            transform: translateX(-5px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            background: var(--gradient);
+            color: white;
+        }
+
+        .status-message {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .status-message.success {
+            background-color: var(--success-color);
+            color: white;
+            display: block;
+        }
+
+        .status-message.error {
+            background-color: var(--error-color);
+            color: white;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1><i class="fas fa-code"></i> Base64 Converter</h1>
+            <p>Encode and decode Base64 strings</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <h2 class="tool-title">Base64 Converter</h2>
+            <p class="tool-description">Convert text to and from Base64 encoding. Perfect for encoding binary data or text for safe transmission.</p>
+            
+            <div class="input-group">
+                <textarea id="inputText" placeholder="Enter text to encode or Base64 to decode..."></textarea>
+                <div class="status-message" id="statusMessage"></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" id="encodeBtn">
+                    <i class="fas fa-lock"></i> Encode
+                </button>
+                <button class="btn" id="decodeBtn">
+                    <i class="fas fa-unlock"></i> Decode
+                </button>
+                <button class="btn btn-secondary" id="clearBtn">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
+            </div>
+
+            <div class="input-group">
+                <textarea id="outputText" placeholder="Result will appear here..." readonly></textarea>
+            </div>
+
+            <button class="btn btn-success" id="copyBtn">
+                <i class="fas fa-copy"></i> Copy Result
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Handy Tools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const encodeBtn = document.getElementById('encodeBtn');
+        const decodeBtn = document.getElementById('decodeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const statusMessage = document.getElementById('statusMessage');
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            setTimeout(() => {
+                statusMessage.className = 'status-message';
+            }, 3000);
+        }
+
+        function encodeBase64() {
+            try {
+                const text = inputText.value;
+                if (!text) {
+                    showStatus('Please enter text to encode', 'error');
+                    return;
+                }
+                const encoded = btoa(unescape(encodeURIComponent(text)));
+                outputText.value = encoded;
+                showStatus('Text encoded successfully', 'success');
+            } catch (error) {
+                showStatus('Error: Invalid input for encoding', 'error');
+            }
+        }
+
+        function decodeBase64() {
+            try {
+                const text = inputText.value;
+                if (!text) {
+                    showStatus('Please enter Base64 to decode', 'error');
+                    return;
+                }
+                const decoded = decodeURIComponent(escape(atob(text)));
+                outputText.value = decoded;
+                showStatus('Text decoded successfully', 'success');
+            } catch (error) {
+                showStatus('Error: Invalid Base64 input', 'error');
+            }
+        }
+
+        function clearText() {
+            inputText.value = '';
+            outputText.value = '';
+            showStatus('Input cleared', 'success');
+        }
+
+        function copyResult() {
+            if (!outputText.value) {
+                showStatus('No result to copy', 'error');
+                return;
+            }
+            navigator.clipboard.writeText(outputText.value).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                showStatus('Result copied to clipboard', 'success');
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        // Event listeners
+        encodeBtn.addEventListener('click', encodeBase64);
+        decodeBtn.addEventListener('click', decodeBase64);
+        clearBtn.addEventListener('click', clearText);
+        copyBtn.addEventListener('click', copyResult);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                encodeBase64();
+            } else if (e.ctrlKey && e.key === 'Backspace') {
+                clearText();
+            }
+        });
+    </script>
+</body>
+</html> 

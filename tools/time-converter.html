@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Zone Converter - Handy Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .tool-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .time-converter-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .time-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: white;
+        }
+
+        .result-container {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .result-value {
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .time-input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1><i class="fas fa-clock"></i> Time Zone Converter</h1>
+            <p>Convert time between different time zones</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <h2 class="tool-title">Time Zone Converter</h2>
+            <p class="tool-description">Convert time between different time zones around the world.</p>
+            
+            <div class="time-converter-container">
+                <div class="time-input-group">
+                    <div class="input-group">
+                        <label for="fromTimeZone">From Time Zone</label>
+                        <select id="fromTimeZone">
+                            <option value="UTC">UTC</option>
+                            <option value="America/New_York">New York (EST)</option>
+                            <option value="America/Los_Angeles">Los Angeles (PST)</option>
+                            <option value="Europe/London">London (GMT)</option>
+                            <option value="Europe/Paris">Paris (CET)</option>
+                            <option value="Asia/Tokyo">Tokyo (JST)</option>
+                            <option value="Australia/Sydney">Sydney (AEST)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="toTimeZone">To Time Zone</label>
+                        <select id="toTimeZone">
+                            <option value="UTC">UTC</option>
+                            <option value="America/New_York">New York (EST)</option>
+                            <option value="America/Los_Angeles">Los Angeles (PST)</option>
+                            <option value="Europe/London">London (GMT)</option>
+                            <option value="Europe/Paris">Paris (CET)</option>
+                            <option value="Asia/Tokyo">Tokyo (JST)</option>
+                            <option value="Australia/Sydney">Sydney (AEST)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="time-input-group">
+                    <div class="input-group">
+                        <label for="dateInput">Date</label>
+                        <input type="date" id="dateInput">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="timeInput">Time</label>
+                        <input type="time" id="timeInput">
+                    </div>
+                </div>
+
+                <div class="result-container">
+                    <div class="result-item">
+                        <span class="result-label">From Time:</span>
+                        <span class="result-value" id="fromTimeResult"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">To Time:</span>
+                        <span class="result-value" id="toTimeResult"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Time Difference:</span>
+                        <span class="result-value" id="timeDifference"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Handy Tools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function formatTimeZoneName(timeZone) {
+            const date = new Date();
+            const options = { timeZone, timeZoneName: 'short' };
+            return new Intl.DateTimeFormat('en-US', options).format(date).split(' ').pop();
+        }
+
+        function updateTimeZones() {
+            const fromTimeZone = document.getElementById('fromTimeZone');
+            const toTimeZone = document.getElementById('toTimeZone');
+            
+            fromTimeZone.querySelectorAll('option').forEach(option => {
+                option.textContent = `${option.value} (${formatTimeZoneName(option.value)})`;
+            });
+            
+            toTimeZone.querySelectorAll('option').forEach(option => {
+                option.textContent = `${option.value} (${formatTimeZoneName(option.value)})`;
+            });
+        }
+
+        function convertTime() {
+            const fromTimeZone = document.getElementById('fromTimeZone').value;
+            const toTimeZone = document.getElementById('toTimeZone').value;
+            const dateInput = document.getElementById('dateInput').value;
+            const timeInput = document.getElementById('timeInput').value;
+
+            if (!dateInput || !timeInput) {
+                return;
+            }
+
+            const [year, month, day] = dateInput.split('-');
+            const [hours, minutes] = timeInput.split(':');
+            
+            const fromDate = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+            const toDate = new Date(fromDate.toLocaleString('en-US', { timeZone: toTimeZone }));
+            
+            const fromOptions = {
+                timeZone: fromTimeZone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            };
+            
+            const toOptions = {
+                timeZone: toTimeZone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            };
+            
+            document.getElementById('fromTimeResult').textContent = 
+                new Intl.DateTimeFormat('en-US', fromOptions).format(fromDate);
+            
+            document.getElementById('toTimeResult').textContent = 
+                new Intl.DateTimeFormat('en-US', toOptions).format(toDate);
+            
+            const timeDiff = (toDate - fromDate) / (1000 * 60 * 60);
+            const diffHours = Math.floor(Math.abs(timeDiff));
+            const diffMinutes = Math.floor((Math.abs(timeDiff) - diffHours) * 60);
+            
+            document.getElementById('timeDifference').textContent = 
+                `${timeDiff >= 0 ? '+' : '-'}${diffHours}h ${diffMinutes}m`;
+        }
+
+        // Event listeners
+        document.getElementById('fromTimeZone').addEventListener('change', convertTime);
+        document.getElementById('toTimeZone').addEventListener('change', convertTime);
+        document.getElementById('dateInput').addEventListener('change', convertTime);
+        document.getElementById('timeInput').addEventListener('change', convertTime);
+
+        // Initialize
+        updateTimeZones();
+        
+        // Set default date and time to current
+        const now = new Date();
+        document.getElementById('dateInput').value = now.toISOString().split('T')[0];
+        document.getElementById('timeInput').value = 
+            `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        
+        // Initial conversion
+        convertTime();
+    </script>
+</body>
+</html> 

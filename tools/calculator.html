@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - Handy Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary-color: #f8fafc;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            --border-color: #e2e8f0;
+            --button-bg: #f1f5f9;
+            --button-hover: #e2e8f0;
+            --operator-bg: #f59e0b;
+            --operator-hover: #d97706;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .tool-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .calculator {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .display {
+            background-color: var(--secondary-color);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: right;
+            font-size: 1.5rem;
+            min-height: 2.5rem;
+            word-wrap: break-word;
+            word-break: break-all;
+            border: 2px solid var(--border-color);
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .btn {
+            background-color: var(--button-bg);
+            border: none;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .operator {
+            background-color: var(--operator-bg);
+            color: white;
+        }
+
+        .operator:hover {
+            background-color: var(--operator-hover);
+        }
+
+        .equals {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .equals:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .clear {
+            background-color: #ff3b30;
+            color: white;
+        }
+
+        .clear:hover {
+            background-color: #d32f2f;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            background: var(--gradient);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1><i class="fas fa-calculator"></i> Calculator</h1>
+            <p>Basic calculator with all operations</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <h2 class="tool-title">Calculator</h2>
+            <p class="tool-description">A simple calculator that supports basic arithmetic operations.</p>
+            
+            <div class="calculator">
+                <div class="display" id="display">0</div>
+                <div class="buttons">
+                    <button class="btn clear" onclick="clearDisplay()">C</button>
+                    <button class="btn" onclick="appendToDisplay('(')">(</button>
+                    <button class="btn" onclick="appendToDisplay(')')">)</button>
+                    <button class="btn operator" onclick="appendToDisplay('/')">/</button>
+                    
+                    <button class="btn" onclick="appendToDisplay('7')">7</button>
+                    <button class="btn" onclick="appendToDisplay('8')">8</button>
+                    <button class="btn" onclick="appendToDisplay('9')">9</button>
+                    <button class="btn operator" onclick="appendToDisplay('*')">×</button>
+                    
+                    <button class="btn" onclick="appendToDisplay('4')">4</button>
+                    <button class="btn" onclick="appendToDisplay('5')">5</button>
+                    <button class="btn" onclick="appendToDisplay('6')">6</button>
+                    <button class="btn operator" onclick="appendToDisplay('-')">-</button>
+                    
+                    <button class="btn" onclick="appendToDisplay('1')">1</button>
+                    <button class="btn" onclick="appendToDisplay('2')">2</button>
+                    <button class="btn" onclick="appendToDisplay('3')">3</button>
+                    <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+                    
+                    <button class="btn" onclick="appendToDisplay('0')">0</button>
+                    <button class="btn" onclick="appendToDisplay('.')">.</button>
+                    <button class="btn" onclick="backspace()">⌫</button>
+                    <button class="btn equals" onclick="calculate()">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Handy Tools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '0';
+
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+
+        function appendToDisplay(value) {
+            if (currentInput === '0' && value !== '.') {
+                currentInput = value;
+            } else {
+                currentInput += value;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function backspace() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        function isOperator(char) {
+            return ['+', '-', '*', '/', '(', ')'].includes(char);
+        }
+
+        function tokenize(input) {
+            const tokens = [];
+            let currentNumber = '';
+            
+            for (let i = 0; i < input.length; i++) {
+                const char = input[i];
+                if (isOperator(char)) {
+                    if (currentNumber !== '') {
+                        tokens.push(parseFloat(currentNumber));
+                        currentNumber = '';
+                    }
+                    tokens.push(char);
+                } else if (!isNaN(char) || char === '.') {
+                    currentNumber += char;
+                }
+            }
+            
+            if (currentNumber !== '') {
+                tokens.push(parseFloat(currentNumber));
+            }
+            
+            return tokens;
+        }
+
+        function calculate() {
+            try {
+                const tokens = tokenize(currentInput);
+                const postfix = toPostfix(tokens);
+                const result = evaluatePostfix(postfix);
+                currentInput = Number.isInteger(result) ? result.toString() : result.toFixed(8).replace(/\.?0+$/, '');
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                updateDisplay();
+                setTimeout(clearDisplay, 1500);
+            }
+        }
+
+        function getPrecedence(operator) {
+            switch (operator) {
+                case '+':
+                case '-':
+                    return 1;
+                case '*':
+                case '/':
+                    return 2;
+                default:
+                    return 0;
+            }
+        }
+
+        function toPostfix(tokens) {
+            const output = [];
+            const operators = [];
+            
+            for (const token of tokens) {
+                if (typeof token === 'number') {
+                    output.push(token);
+                } else if (token === '(') {
+                    operators.push(token);
+                } else if (token === ')') {
+                    while (operators.length > 0 && operators[operators.length - 1] !== '(') {
+                        output.push(operators.pop());
+                    }
+                    operators.pop(); // Remove '('
+                } else {
+                    while (
+                        operators.length > 0 &&
+                        operators[operators.length - 1] !== '(' &&
+                        getPrecedence(operators[operators.length - 1]) >= getPrecedence(token)
+                    ) {
+                        output.push(operators.pop());
+                    }
+                    operators.push(token);
+                }
+            }
+            
+            while (operators.length > 0) {
+                output.push(operators.pop());
+            }
+            
+            return output;
+        }
+
+        function evaluatePostfix(postfix) {
+            const stack = [];
+            
+            for (const token of postfix) {
+                if (typeof token === 'number') {
+                    stack.push(token);
+                } else {
+                    const b = stack.pop();
+                    const a = stack.pop();
+                    
+                    switch (token) {
+                        case '+':
+                            stack.push(a + b);
+                            break;
+                        case '-':
+                            stack.push(a - b);
+                            break;
+                        case '*':
+                            stack.push(a * b);
+                            break;
+                        case '/':
+                            if (b === 0) throw new Error('Division by zero');
+                            stack.push(a / b);
+                            break;
+                    }
+                }
+            }
+            
+            return stack[0];
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            if (/[0-9+\-*/.()]/.test(key)) {
+                appendToDisplay(key);
+            } else if (key === 'Enter') {
+                calculate();
+            } else if (key === 'Backspace') {
+                backspace();
+            } else if (key === 'Escape') {
+                clearDisplay();
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter - Handy Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .tool-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .converter-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .converter-group {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 5px;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: white;
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--card-bg);
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1><i class="fas fa-exchange-alt"></i> Unit Converter</h1>
+            <p>Convert between different units of measurement</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <h2 class="tool-title">Unit Converter</h2>
+            <p class="tool-description">Convert between different units of measurement including length, weight, temperature, and more.</p>
+            
+            <div class="converter-container">
+                <div class="converter-group">
+                    <h3>Length</h3>
+                    <div class="input-group">
+                        <label for="lengthValue">Value:</label>
+                        <input type="number" id="lengthValue" placeholder="Enter value">
+                    </div>
+                    <div class="input-group">
+                        <label for="lengthFrom">From:</label>
+                        <select id="lengthFrom">
+                            <option value="mm">Millimeter (mm)</option>
+                            <option value="cm">Centimeter (cm)</option>
+                            <option value="m">Meter (m)</option>
+                            <option value="km">Kilometer (km)</option>
+                            <option value="in">Inch (in)</option>
+                            <option value="ft">Foot (ft)</option>
+                            <option value="yd">Yard (yd)</option>
+                            <option value="mi">Mile (mi)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="lengthTo">To:</label>
+                        <select id="lengthTo">
+                            <option value="mm">Millimeter (mm)</option>
+                            <option value="cm">Centimeter (cm)</option>
+                            <option value="m">Meter (m)</option>
+                            <option value="km">Kilometer (km)</option>
+                            <option value="in">Inch (in)</option>
+                            <option value="ft">Foot (ft)</option>
+                            <option value="yd">Yard (yd)</option>
+                            <option value="mi">Mile (mi)</option>
+                        </select>
+                    </div>
+                    <div class="result" id="lengthResult">0</div>
+                </div>
+
+                <div class="converter-group">
+                    <h3>Weight</h3>
+                    <div class="input-group">
+                        <label for="weightValue">Value:</label>
+                        <input type="number" id="weightValue" placeholder="Enter value">
+                    </div>
+                    <div class="input-group">
+                        <label for="weightFrom">From:</label>
+                        <select id="weightFrom">
+                            <option value="mg">Milligram (mg)</option>
+                            <option value="g">Gram (g)</option>
+                            <option value="kg">Kilogram (kg)</option>
+                            <option value="t">Tonne (t)</option>
+                            <option value="oz">Ounce (oz)</option>
+                            <option value="lb">Pound (lb)</option>
+                            <option value="st">Stone (st)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="weightTo">To:</label>
+                        <select id="weightTo">
+                            <option value="mg">Milligram (mg)</option>
+                            <option value="g">Gram (g)</option>
+                            <option value="kg">Kilogram (kg)</option>
+                            <option value="t">Tonne (t)</option>
+                            <option value="oz">Ounce (oz)</option>
+                            <option value="lb">Pound (lb)</option>
+                            <option value="st">Stone (st)</option>
+                        </select>
+                    </div>
+                    <div class="result" id="weightResult">0</div>
+                </div>
+
+                <div class="converter-group">
+                    <h3>Temperature</h3>
+                    <div class="input-group">
+                        <label for="tempValue">Value:</label>
+                        <input type="number" id="tempValue" placeholder="Enter value">
+                    </div>
+                    <div class="input-group">
+                        <label for="tempFrom">From:</label>
+                        <select id="tempFrom">
+                            <option value="c">Celsius (°C)</option>
+                            <option value="f">Fahrenheit (°F)</option>
+                            <option value="k">Kelvin (K)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="tempTo">To:</label>
+                        <select id="tempTo">
+                            <option value="c">Celsius (°C)</option>
+                            <option value="f">Fahrenheit (°F)</option>
+                            <option value="k">Kelvin (K)</option>
+                        </select>
+                    </div>
+                    <div class="result" id="tempResult">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Handy Tools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Length conversion factors
+        const lengthFactors = {
+            mm: 1,
+            cm: 10,
+            m: 1000,
+            km: 1000000,
+            in: 25.4,
+            ft: 304.8,
+            yd: 914.4,
+            mi: 1609344
+        };
+
+        // Weight conversion factors
+        const weightFactors = {
+            mg: 1,
+            g: 1000,
+            kg: 1000000,
+            t: 1000000000,
+            oz: 28349.5,
+            lb: 453592,
+            st: 6350290
+        };
+
+        // Temperature conversion functions
+        function celsiusToFahrenheit(c) {
+            return (c * 9/5) + 32;
+        }
+
+        function fahrenheitToCelsius(f) {
+            return (f - 32) * 5/9;
+        }
+
+        function celsiusToKelvin(c) {
+            return c + 273.15;
+        }
+
+        function kelvinToCelsius(k) {
+            return k - 273.15;
+        }
+
+        function fahrenheitToKelvin(f) {
+            return celsiusToKelvin(fahrenheitToCelsius(f));
+        }
+
+        function kelvinToFahrenheit(k) {
+            return celsiusToFahrenheit(kelvinToCelsius(k));
+        }
+
+        // Length conversion
+        document.getElementById('lengthValue').addEventListener('input', convertLength);
+        document.getElementById('lengthFrom').addEventListener('change', convertLength);
+        document.getElementById('lengthTo').addEventListener('change', convertLength);
+
+        function convertLength() {
+            const value = parseFloat(document.getElementById('lengthValue').value) || 0;
+            const from = document.getElementById('lengthFrom').value;
+            const to = document.getElementById('lengthTo').value;
+            
+            const result = (value * lengthFactors[from]) / lengthFactors[to];
+            document.getElementById('lengthResult').textContent = result.toFixed(6);
+        }
+
+        // Weight conversion
+        document.getElementById('weightValue').addEventListener('input', convertWeight);
+        document.getElementById('weightFrom').addEventListener('change', convertWeight);
+        document.getElementById('weightTo').addEventListener('change', convertWeight);
+
+        function convertWeight() {
+            const value = parseFloat(document.getElementById('weightValue').value) || 0;
+            const from = document.getElementById('weightFrom').value;
+            const to = document.getElementById('weightTo').value;
+            
+            const result = (value * weightFactors[from]) / weightFactors[to];
+            document.getElementById('weightResult').textContent = result.toFixed(6);
+        }
+
+        // Temperature conversion
+        document.getElementById('tempValue').addEventListener('input', convertTemperature);
+        document.getElementById('tempFrom').addEventListener('change', convertTemperature);
+        document.getElementById('tempTo').addEventListener('change', convertTemperature);
+
+        function convertTemperature() {
+            const value = parseFloat(document.getElementById('tempValue').value) || 0;
+            const from = document.getElementById('tempFrom').value;
+            const to = document.getElementById('tempTo').value;
+            
+            let result;
+            if (from === to) {
+                result = value;
+            } else if (from === 'c' && to === 'f') {
+                result = celsiusToFahrenheit(value);
+            } else if (from === 'f' && to === 'c') {
+                result = fahrenheitToCelsius(value);
+            } else if (from === 'c' && to === 'k') {
+                result = celsiusToKelvin(value);
+            } else if (from === 'k' && to === 'c') {
+                result = kelvinToCelsius(value);
+            } else if (from === 'f' && to === 'k') {
+                result = fahrenheitToKelvin(value);
+            } else if (from === 'k' && to === 'f') {
+                result = kelvinToFahrenheit(value);
+            }
+            
+            document.getElementById('tempResult').textContent = result.toFixed(2);
+        }
+    </script>
+</body>
+</html> 

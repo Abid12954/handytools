@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener - Handy Tools</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        input {
+            padding: 12px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: 2px solid #007BFF;
+            background: white;
+            color: #007BFF;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #007BFF;
+            color: white;
+        }
+
+        .result {
+            margin-top: 20px;
+            word-wrap: break-word;
+        }
+
+        .result a {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #copyBtn {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: #007BFF;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+        <h2>URL Shortener</h2>
+        <input type="text" id="longUrl" placeholder="Enter your URL" />
+        <button onclick="shortenURL()">Shorten</button>
+        <div class="result" id="shortResult"></div>
+        <button id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        let currentShortUrl = "";
+
+        async function shortenURL() {
+            const longUrl = document.getElementById("longUrl").value.trim();
+            const resultBox = document.getElementById("shortResult");
+            const copyBtn = document.getElementById("copyBtn");
+
+            if (!longUrl) {
+                alert("Please enter a valid URL.");
+                return;
+            }
+
+            resultBox.innerHTML = "Shortening...";
+            copyBtn.style.display = "none";
+
+            try {
+                const res = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+                const shortUrl = await res.text();
+
+                if (shortUrl.startsWith("Error")) {
+                    resultBox.innerHTML = `❌ Failed to shorten URL.`;
+                } else {
+                    currentShortUrl = shortUrl;
+                    resultBox.innerHTML = `✅ Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+                    copyBtn.style.display = "inline-block";
+                }
+            } catch (err) {
+                resultBox.innerHTML = "❌ Something went wrong!";
+            }
+        }
+
+        function copyToClipboard() {
+            if (currentShortUrl) {
+                navigator.clipboard.writeText(currentShortUrl).then(() => {
+                    const copyBtn = document.getElementById("copyBtn");
+                    copyBtn.textContent = "Copied!";
+                    setTimeout(() => {
+                        copyBtn.textContent = "Copy to Clipboard";
+                    }, 2000);
+                });
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Converter - Handy Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .tool-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .converter-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #357abd;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .result-container {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .btn-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1><i class="fas fa-text-height"></i> Case Converter</h1>
+            <p>Convert text between different cases with ease</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <h2 class="tool-title">Case Converter</h2>
+            <p class="tool-description">Convert your text between different cases: uppercase, lowercase, title case, sentence case, and more.</p>
+            
+            <div class="converter-container">
+                <div class="input-group">
+                    <label for="inputText">Enter Text</label>
+                    <textarea id="inputText" placeholder="Enter the text you want to convert..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" id="upperBtn">
+                        <i class="fas fa-arrow-up"></i> UPPERCASE
+                    </button>
+                    <button class="btn" id="lowerBtn">
+                        <i class="fas fa-arrow-down"></i> lowercase
+                    </button>
+                    <button class="btn" id="titleBtn">
+                        <i class="fas fa-text-width"></i> Title Case
+                    </button>
+                    <button class="btn" id="sentenceBtn">
+                        <i class="fas fa-align-left"></i> Sentence case
+                    </button>
+                    <button class="btn" id="capitalizeBtn">
+                        <i class="fas fa-font"></i> Capitalize
+                    </button>
+                    <button class="btn" id="invertBtn">
+                        <i class="fas fa-exchange-alt"></i> Invert Case
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <label for="resultText">Result</label>
+                    <textarea id="resultText" readonly></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copy Result
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Handy Tools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toTitleCase(str) {
+            return str.replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
+
+        function toSentenceCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+
+        function toCapitalize(str) {
+            return str.replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+        }
+
+        function invertCase(str) {
+            return str.split('').map(function(c) {
+                return c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase();
+            }).join('');
+        }
+
+        function updateResult() {
+            const input = document.getElementById('inputText').value;
+            const result = document.getElementById('resultText');
+            
+            switch(this.id) {
+                case 'upperBtn':
+                    result.value = input.toUpperCase();
+                    break;
+                case 'lowerBtn':
+                    result.value = input.toLowerCase();
+                    break;
+                case 'titleBtn':
+                    result.value = toTitleCase(input);
+                    break;
+                case 'sentenceBtn':
+                    result.value = toSentenceCase(input);
+                    break;
+                case 'capitalizeBtn':
+                    result.value = toCapitalize(input);
+                    break;
+                case 'invertBtn':
+                    result.value = invertCase(input);
+                    break;
+            }
+        }
+
+        function clearInputs() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('resultText').value = '';
+        }
+
+        function copyResult() {
+            const result = document.getElementById('resultText');
+            navigator.clipboard.writeText(result.value).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('upperBtn').addEventListener('click', updateResult);
+        document.getElementById('lowerBtn').addEventListener('click', updateResult);
+        document.getElementById('titleBtn').addEventListener('click', updateResult);
+        document.getElementById('sentenceBtn').addEventListener('click', updateResult);
+        document.getElementById('capitalizeBtn').addEventListener('click', updateResult);
+        document.getElementById('invertBtn').addEventListener('click', updateResult);
+        document.getElementById('clearBtn').addEventListener('click', clearInputs);
+        document.getElementById('copyBtn').addEventListener('click', copyResult);
+    </script>
+</body>
+</html> 

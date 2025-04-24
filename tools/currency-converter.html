@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter - Handy Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .tool-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .converter-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .currency-input-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .swap-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .swap-btn:hover {
+            background-color: #357abd;
+        }
+
+        .result-container {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+        }
+
+        .rate-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .currency-input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .searchable-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .currency-select {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: white;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .searchable-dropdown.active .currency-select {
+            display: block;
+        }
+
+        .currency-select option {
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        .currency-select option:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-hint {
+            position: absolute;
+            right: 0;
+            top: -20px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .no-results {
+            padding: 0.8rem;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .currency-flag {
+            display: inline-block;
+            width: 20px;
+            height: 15px;
+            margin-right: 8px;
+            vertical-align: middle;
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1><i class="fas fa-exchange-alt"></i> Currency Converter</h1>
+            <p>Convert between different currencies with real-time exchange rates</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <h2 class="tool-title">Currency Converter</h2>
+            <p class="tool-description">Convert between different currencies using real-time exchange rates.</p>
+            
+            <div class="converter-container">
+                <div class="currency-input-group">
+                    <div class="input-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" placeholder="Enter amount" value="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="fromCurrency">From</label>
+                        <div class="searchable-dropdown">
+                            <input type="text" id="fromCurrencySearch" placeholder="Search currency..." class="search-input">
+                            <select id="fromCurrency" class="currency-select" size="5">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="swap-btn" id="swapCurrencies">
+                    <i class="fas fa-exchange-alt"></i> Swap Currencies
+                </button>
+
+                <div class="currency-input-group">
+                    <div class="input-group">
+                        <label for="result">Result</label>
+                        <input type="number" id="result" readonly>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="toCurrency">To</label>
+                        <div class="searchable-dropdown">
+                            <input type="text" id="toCurrencySearch" placeholder="Search currency..." class="search-input">
+                            <select id="toCurrency" class="currency-select" size="5">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-info" id="rateInfo">
+                    Loading exchange rates...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Handy Tools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
+        const API_URL = 'https://api.exchangerate-api.com/v4/latest/';
+
+        let exchangeRates = {};
+        let lastUpdate = null;
+
+        const currencies = {
+            'USD': 'US Dollar',
+            'EUR': 'Euro',
+            'GBP': 'British Pound',
+            'JPY': 'Japanese Yen',
+            'AUD': 'Australian Dollar',
+            'CAD': 'Canadian Dollar',
+            'CHF': 'Swiss Franc',
+            'CNY': 'Chinese Yuan',
+            'INR': 'Indian Rupee',
+            'BRL': 'Brazilian Real',
+            'RUB': 'Russian Ruble',
+            'ZAR': 'South African Rand',
+            'MXN': 'Mexican Peso',
+            'SGD': 'Singapore Dollar',
+            'NZD': 'New Zealand Dollar',
+            'SEK': 'Swedish Krona',
+            'NOK': 'Norwegian Krone',
+            'DKK': 'Danish Krone',
+            'PLN': 'Polish Złoty',
+            'TRY': 'Turkish Lira',
+            'HKD': 'Hong Kong Dollar',
+            'KRW': 'South Korean Won',
+            'AED': 'UAE Dirham',
+            'SAR': 'Saudi Riyal',
+            'THB': 'Thai Baht',
+            'IDR': 'Indonesian Rupiah',
+            'MYR': 'Malaysian Ringgit',
+            'PHP': 'Philippine Peso',
+            'VND': 'Vietnamese Dong',
+            'EGP': 'Egyptian Pound',
+            'PKR': 'Pakistani Rupee',
+            'BDT': 'Bangladeshi Taka',
+            'LKR': 'Sri Lankan Rupee',
+            'NPR': 'Nepalese Rupee',
+            'KWD': 'Kuwaiti Dinar',
+            'QAR': 'Qatari Riyal',
+            'OMR': 'Omani Rial',
+            'BHD': 'Bahraini Dinar',
+            'JOD': 'Jordanian Dinar',
+            'ILS': 'Israeli Shekel',
+            'CLP': 'Chilean Peso',
+            'COP': 'Colombian Peso',
+            'ARS': 'Argentine Peso',
+            'PEN': 'Peruvian Sol',
+            'UYU': 'Uruguayan Peso',
+            'BOB': 'Bolivian Boliviano',
+            'PYG': 'Paraguayan Guarani',
+            'CRC': 'Costa Rican Colon',
+            'DOP': 'Dominican Peso',
+            'GTQ': 'Guatemalan Quetzal',
+            'HNL': 'Honduran Lempira',
+            'NIO': 'Nicaraguan Cordoba',
+            'PAB': 'Panamanian Balboa',
+            'SVC': 'Salvadoran Colon',
+            'TTD': 'Trinidad and Tobago Dollar',
+            'BZD': 'Belize Dollar',
+            'JMD': 'Jamaican Dollar',
+            'BSD': 'Bahamian Dollar',
+            'BBD': 'Barbadian Dollar',
+            'XCD': 'East Caribbean Dollar',
+            'ANG': 'Netherlands Antillean Guilder',
+            'AWG': 'Aruban Florin',
+            'BMD': 'Bermudian Dollar',
+            'KYD': 'Cayman Islands Dollar',
+            'FJD': 'Fijian Dollar',
+            'PGK': 'Papua New Guinean Kina',
+            'SBD': 'Solomon Islands Dollar',
+            'TOP': 'Tongan Paʻanga',
+            'VUV': 'Vanuatu Vatu',
+            'WST': 'Samoan Tala',
+            'XPF': 'CFP Franc',
+            'SHP': 'Saint Helena Pound',
+            'FKP': 'Falkland Islands Pound',
+            'GIP': 'Gibraltar Pound',
+            'GGP': 'Guernsey Pound',
+            'IMP': 'Isle of Man Pound',
+            'JEP': 'Jersey Pound',
+            'CZK': 'Czech Koruna',
+            'HUF': 'Hungarian Forint',
+            'RON': 'Romanian Leu',
+            'BGN': 'Bulgarian Lev',
+            'HRK': 'Croatian Kuna',
+            'RSD': 'Serbian Dinar',
+            'MKD': 'Macedonian Denar',
+            'ALL': 'Albanian Lek',
+            'BAM': 'Bosnia-Herzegovina Convertible Mark',
+            'BYN': 'Belarusian Ruble',
+            'MDL': 'Moldovan Leu',
+            'UAH': 'Ukrainian Hryvnia',
+            'GEL': 'Georgian Lari',
+            'AMD': 'Armenian Dram',
+            'AZN': 'Azerbaijani Manat',
+            'KZT': 'Kazakhstani Tenge',
+            'KGS': 'Kyrgyzstani Som',
+            'TJS': 'Tajikistani Somoni',
+            'TMT': 'Turkmenistani Manat',
+            'UZS': 'Uzbekistani Som',
+            'MNT': 'Mongolian Tugrik',
+            'MMK': 'Myanmar Kyat',
+            'LAK': 'Laotian Kip',
+            'KHR': 'Cambodian Riel',
+            'MVR': 'Maldivian Rufiyaa',
+            'BTN': 'Bhutanese Ngultrum',
+            'MUR': 'Mauritian Rupee',
+            'SCR': 'Seychellois Rupee',
+            'DJF': 'Djiboutian Franc',
+            'ERN': 'Eritrean Nakfa',
+            'ETB': 'Ethiopian Birr',
+            'SOS': 'Somali Shilling',
+            'TZS': 'Tanzanian Shilling',
+            'UGX': 'Ugandan Shilling',
+            'KES': 'Kenyan Shilling',
+            'RWF': 'Rwandan Franc',
+            'BIF': 'Burundian Franc',
+            'CDF': 'Congolese Franc',
+            'GMD': 'Gambian Dalasi',
+            'GHS': 'Ghanaian Cedi',
+            'GNF': 'Guinean Franc',
+            'LRD': 'Liberian Dollar',
+            'MGA': 'Malagasy Ariary',
+            'MWK': 'Malawian Kwacha',
+            'MZN': 'Mozambican Metical',
+            'NAD': 'Namibian Dollar',
+            'NGN': 'Nigerian Naira',
+            'SDG': 'Sudanese Pound',
+            'SSP': 'South Sudanese Pound',
+            'SZL': 'Swazi Lilangeni',
+            'TND': 'Tunisian Dinar',
+            'ZMW': 'Zambian Kwacha',
+            'ZWL': 'Zimbabwean Dollar',
+            'AOA': 'Angolan Kwanza',
+            'BWP': 'Botswana Pula',
+            'LSL': 'Lesotho Loti',
+            'MAD': 'Moroccan Dirham',
+            'MRO': 'Mauritanian Ouguiya',
+            'STD': 'São Tomé and Príncipe Dobra',
+            'XAF': 'Central African CFA Franc',
+            'XOF': 'West African CFA Franc',
+            'CUP': 'Cuban Peso',
+            'CUC': 'Cuban Convertible Peso',
+            'CVE': 'Cape Verdean Escudo',
+            'KMF': 'Comorian Franc',
+            'XAF': 'Central African CFA Franc',
+            'XOF': 'West African CFA Franc',
+            'XPF': 'CFP Franc',
+            'YER': 'Yemeni Rial',
+            'ZMW': 'Zambian Kwacha',
+            'ZWL': 'Zimbabwean Dollar',
+            'AFN': 'Afghan Afghani',
+            'ALL': 'Albanian Lek',
+            'DZD': 'Algerian Dinar',
+            'AOA': 'Angolan Kwanza',
+            'XCD': 'East Caribbean Dollar',
+            'ARS': 'Argentine Peso',
+            'AMD': 'Armenian Dram',
+            'AWG': 'Aruban Florin',
+            'AUD': 'Australian Dollar',
+            'AZN': 'Azerbaijani Manat',
+            'BSD': 'Bahamian Dollar',
+            'BHD': 'Bahraini Dinar',
+            'BDT': 'Bangladeshi Taka',
+            'BBD': 'Barbadian Dollar',
+            'BYN': 'Belarusian Ruble',
+            'BZD': 'Belize Dollar',
+            'XOF': 'West African CFA Franc',
+            'BMD': 'Bermudian Dollar',
+            'BTN': 'Bhutanese Ngultrum',
+            'BOB': 'Bolivian Boliviano',
+            'BAM': 'Bosnia-Herzegovina Convertible Mark',
+            'BWP': 'Botswana Pula',
+            'BRL': 'Brazilian Real',
+            'BND': 'Brunei Dollar',
+            'BGN': 'Bulgarian Lev',
+            'XOF': 'West African CFA Franc',
+            'BIF': 'Burundian Franc',
+            'CVE': 'Cape Verdean Escudo',
+            'KHR': 'Cambodian Riel',
+            'XAF': 'Central African CFA Franc',
+            'CAD': 'Canadian Dollar',
+            'KYD': 'Cayman Islands Dollar',
+            'XAF': 'Central African CFA Franc',
+            'CLP': 'Chilean Peso',
+            'CNY': 'Chinese Yuan',
+            'AUD': 'Australian Dollar',
+            'COP': 'Colombian Peso',
+            'KMF': 'Comorian Franc',
+            'CDF': 'Congolese Franc',
+            'NZD': 'New Zealand Dollar',
+            'CRC': 'Costa Rican Colon',
+            'XOF': 'West African CFA Franc',
+            'HRK': 'Croatian Kuna',
+            'CUP': 'Cuban Peso',
+            'ANG': 'Netherlands Antillean Guilder',
+            'CZK': 'Czech Koruna',
+            'DKK': 'Danish Krone',
+            'DJF': 'Djiboutian Franc',
+            'XCD': 'East Caribbean Dollar',
+            'DOP': 'Dominican Peso',
+            'USD': 'US Dollar',
+            'EGP': 'Egyptian Pound',
+            'SVC': 'Salvadoran Colon',
+            'XAF': 'Central African CFA Franc',
+            'ERN': 'Eritrean Nakfa',
+            'ETB': 'Ethiopian Birr',
+            'FKP': 'Falkland Islands Pound',
+            'DKK': 'Danish Krone',
+            'FJD': 'Fijian Dollar',
+            'EUR': 'Euro',
+            'DKK': 'Danish Krone',
+            'XPF': 'CFP Franc',
+            'XAF': 'Central African CFA Franc',
+            'GMD': 'Gambian Dalasi',
+            'GEL': 'Georgian Lari',
+            'EUR': 'Euro',
+            'GHS': 'Ghanaian Cedi',
+            'GIP': 'Gibraltar Pound',
+            'EUR': 'Euro',
+            'DKK': 'Danish Krone',
+            'XCD': 'East Caribbean Dollar',
+            'GTQ': 'Guatemalan Quetzal',
+            'GBP': 'British Pound',
+            'GNF': 'Guinean Franc',
+            'XOF': 'West African CFA Franc',
+            'GYD': 'Guyanese Dollar',
+            'HTG': 'Haitian Gourde',
+            'AUD': 'Australian Dollar',
+            'HNL': 'Honduran Lempira',
+            'HKD': 'Hong Kong Dollar',
+            'HUF': 'Hungarian Forint',
+            'ISK': 'Icelandic Króna',
+            'INR': 'Indian Rupee',
+            'IDR': 'Indonesian Rupiah',
+            'IRR': 'Iranian Rial',
+            'IQD': 'Iraqi Dinar',
+            'EUR': 'Euro',
+            'GBP': 'British Pound',
+            'ILS': 'Israeli Shekel',
+            'EUR': 'Euro',
+            'JMD': 'Jamaican Dollar',
+            'JPY': 'Japanese Yen',
+            'GBP': 'British Pound',
+            'JOD': 'Jordanian Dinar',
+            'KZT': 'Kazakhstani Tenge',
+            'KES': 'Kenyan Shilling',
+            'AUD': 'Australian Dollar',
+            'KPW': 'North Korean Won',
+            'KRW': 'South Korean Won',
+            'KWD': 'Kuwaiti Dinar',
+            'KGS': 'Kyrgyzstani Som',
+            'LAK': 'Laotian Kip',
+            'EUR': 'Euro',
+            'LBP': 'Lebanese Pound',
+            'LSL': 'Lesotho Loti',
+            'LRD': 'Liberian Dollar',
+            'LYD': 'Libyan Dinar',
+            'CHF': 'Swiss Franc',
+            'EUR': 'Euro',
+            'EUR': 'Euro',
+            'MOP': 'Macanese Pataca',
+            'MKD': 'Macedonian Denar',
+            'MGA': 'Malagasy Ariary',
+            'MWK': 'Malawian Kwacha',
+            'MYR': 'Malaysian Ringgit',
+            'MVR': 'Maldivian Rufiyaa',
+            'XOF': 'West African CFA Franc',
+            'EUR': 'Euro',
+            'USD': 'US Dollar',
+            'EUR': 'Euro',
+            'MRO': 'Mauritanian Ouguiya',
+            'MUR': 'Mauritian Rupee',
+            'MXN': 'Mexican Peso',
+            'USD': 'US Dollar',
+            'MDL': 'Moldovan Leu',
+            'EUR': 'Euro',
+            'MNT': 'Mongolian Tugrik',
+            'EUR': 'Euro',
+            'XCD': 'East Caribbean Dollar',
+            'MAD': 'Moroccan Dirham',
+            'MZN': 'Mozambican Metical',
+            'MMK': 'Myanmar Kyat',
+            'NAD': 'Namibian Dollar',
+            'AUD': 'Australian Dollar',
+            'NPR': 'Nepalese Rupee',
+            'EUR': 'Euro',
+            'NZD': 'New Zealand Dollar',
+            'NIO': 'Nicaraguan Cordoba',
+            'XOF': 'West African CFA Franc',
+            'NGN': 'Nigerian Naira',
+            'NZD': 'New Zealand Dollar',
+            'AUD': 'Australian Dollar',
+            'NOK': 'Norwegian Krone',
+            'OMR': 'Omani Rial',
+            'PKR': 'Pakistani Rupee',
+            'USD': 'US Dollar',
+            'ILS': 'Israeli Shekel',
+            'PAB': 'Panamanian Balboa',
+            'PGK': 'Papua New Guinean Kina',
+            'PYG': 'Paraguayan Guarani',
+            'PEN': 'Peruvian Sol',
+            'PHP': 'Philippine Peso',
+            'NZD': 'New Zealand Dollar',
+            'PLN': 'Polish Złoty',
+            'EUR': 'Euro',
+            'QAR': 'Qatari Riyal',
+            'EUR': 'Euro',
+            'RON': 'Romanian Leu',
+            'RUB': 'Russian Ruble',
+            'RWF': 'Rwandan Franc',
+            'EUR': 'Euro',
+            'SHP': 'Saint Helena Pound',
+            'XCD': 'East Caribbean Dollar',
+            'XCD': 'East Caribbean Dollar',
+            'EUR': 'Euro',
+            'EUR': 'Euro',
+            'WST': 'Samoan Tala',
+            'EUR': 'Euro',
+            'STD': 'São Tomé and Príncipe Dobra',
+            'SAR': 'Saudi Riyal',
+            'XOF': 'West African CFA Franc',
+            'RSD': 'Serbian Dinar',
+            'SCR': 'Seychellois Rupee',
+            'SLL': 'Sierra Leonean Leone',
+            'SGD': 'Singapore Dollar',
+            'ANG': 'Netherlands Antillean Guilder',
+            'EUR': 'Euro',
+            'EUR': 'Euro',
+            'SBD': 'Solomon Islands Dollar',
+            'SOS': 'Somali Shilling',
+            'ZAR': 'South African Rand',
+            'GBP': 'British Pound',
+            'SSP': 'South Sudanese Pound',
+            'EUR': 'Euro',
+            'LKR': 'Sri Lankan Rupee',
+            'SDG': 'Sudanese Pound',
+            'SRD': 'Surinamese Dollar',
+            'NOK': 'Norwegian Krone',
+            'SZL': 'Swazi Lilangeni',
+            'SEK': 'Swedish Krona',
+            'CHF': 'Swiss Franc',
+            'SYP': 'Syrian Pound',
+            'TWD': 'New Taiwan Dollar',
+            'TJS': 'Tajikistani Somoni',
+            'TZS': 'Tanzanian Shilling',
+            'THB': 'Thai Baht',
+            'USD': 'US Dollar',
+            'XOF': 'West African CFA Franc',
+            'NZD': 'New Zealand Dollar',
+            'TOP': 'Tongan Paʻanga',
+            'TTD': 'Trinidad and Tobago Dollar',
+            'TND': 'Tunisian Dinar',
+            'TRY': 'Turkish Lira',
+            'TMT': 'Turkmenistani Manat',
+            'USD': 'US Dollar',
+            'AUD': 'Australian Dollar',
+            'UGX': 'Ugandan Shilling',
+            'UAH': 'Ukrainian Hryvnia',
+            'AED': 'UAE Dirham',
+            'GBP': 'British Pound',
+            'USD': 'US Dollar',
+            'UYU': 'Uruguayan Peso',
+            'UZS': 'Uzbekistani Som',
+            'VUV': 'Vanuatu Vatu',
+            'EUR': 'Euro',
+            'VES': 'Venezuelan Bolívar',
+            'VND': 'Vietnamese Dong',
+            'USD': 'US Dollar',
+            'XPF': 'CFP Franc',
+            'MAD': 'Moroccan Dirham',
+            'YER': 'Yemeni Rial',
+            'ZMW': 'Zambian Kwacha',
+            'USD': 'US Dollar',
+            'EUR': 'Euro'
+        };
+
+        async function fetchExchangeRates(baseCurrency) {
+            try {
+                const response = await fetch(`${API_URL}${baseCurrency}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                exchangeRates = data.rates;
+                lastUpdate = new Date(data.time_last_updated * 1000);
+                return true;
+            } catch (error) {
+                console.error('Error fetching exchange rates:', error);
+                document.getElementById('rateInfo').textContent = 
+                    'Error loading exchange rates. Please try again later.';
+                return false;
+            }
+        }
+
+        function convertCurrency(amount, fromCurrency, toCurrency) {
+            if (!exchangeRates[toCurrency] || !exchangeRates[fromCurrency]) {
+                return null;
+            }
+
+            // Convert to USD first (base currency)
+            const amountInUSD = amount / exchangeRates[fromCurrency];
+            // Then convert to target currency
+            return amountInUSD * exchangeRates[toCurrency];
+        }
+
+        function updateConversion() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+
+            if (!amount || isNaN(amount)) {
+                document.getElementById('result').value = '';
+                document.getElementById('rateInfo').textContent = 'Please enter a valid amount';
+                return;
+            }
+
+            const result = convertCurrency(amount, fromCurrency, toCurrency);
+            if (result !== null) {
+                document.getElementById('result').value = result.toFixed(2);
+                const rate = (exchangeRates[toCurrency] / exchangeRates[fromCurrency]).toFixed(4);
+                document.getElementById('rateInfo').textContent = 
+                    `1 ${fromCurrency} = ${rate} ${toCurrency}`;
+            } else {
+                document.getElementById('result').value = '';
+                document.getElementById('rateInfo').textContent = 'Error converting currencies';
+            }
+        }
+
+        function swapCurrencies() {
+            const fromCurrency = document.getElementById('fromCurrency');
+            const toCurrency = document.getElementById('toCurrency');
+            const temp = fromCurrency.value;
+            fromCurrency.value = toCurrency.value;
+            toCurrency.value = temp;
+            updateConversion();
+        }
+
+        // Event listeners
+        document.getElementById('amount').addEventListener('input', updateConversion);
+        document.getElementById('fromCurrency').addEventListener('change', updateConversion);
+        document.getElementById('toCurrency').addEventListener('change', updateConversion);
+        document.getElementById('swapCurrencies').addEventListener('click', swapCurrencies);
+
+        // Initialize
+        async function initialize() {
+            const success = await fetchExchangeRates('USD');
+            if (success) {
+                updateConversion();
+            }
+        }
+
+        function populateCurrencyDropdowns() {
+            const fromSelect = document.getElementById('fromCurrency');
+            const toSelect = document.getElementById('toCurrency');
+
+            // Clear existing options
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+
+            // Create sorted array of currencies
+            const sortedCurrencies = Object.entries(currencies)
+                .map(([code, name]) => ({ code, name }))
+                .sort((a, b) => a.code.localeCompare(b.code));
+
+            // Add options to both selects
+            sortedCurrencies.forEach(currency => {
+                const option = document.createElement('option');
+                option.value = currency.code;
+                option.textContent = `${currency.code} - ${currency.name}`;
+                fromSelect.appendChild(option.cloneNode(true));
+                toSelect.appendChild(option);
+            });
+
+            // Set up search functionality
+            setupSearchableDropdown('fromCurrencySearch', 'fromCurrency');
+            setupSearchableDropdown('toCurrencySearch', 'toCurrency');
+
+            // Set initial values
+            document.getElementById('fromCurrencySearch').value = 'USD - US Dollar';
+            document.getElementById('toCurrencySearch').value = 'EUR - Euro';
+        }
+
+        function setupSearchableDropdown(searchInputId, selectId) {
+            const searchInput = document.getElementById(searchInputId);
+            const select = document.getElementById(selectId);
+            const dropdown = searchInput.parentElement;
+
+            // Show dropdown on focus
+            searchInput.addEventListener('focus', () => {
+                dropdown.classList.add('active');
+                select.style.display = 'block';
+                // Show all options when focusing
+                const options = select.getElementsByTagName('option');
+                for (let option of options) {
+                    option.style.display = '';
+                }
+            });
+
+            // Hide dropdown on blur
+            searchInput.addEventListener('blur', () => {
+                setTimeout(() => {
+                    dropdown.classList.remove('active');
+                    select.style.display = 'none';
+                }, 200);
+            });
+
+            // Filter options on input
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const options = select.getElementsByTagName('option');
+                
+                for (let option of options) {
+                    const text = option.textContent.toLowerCase();
+                    option.style.display = text.includes(searchTerm) ? '' : 'none';
+                }
+            });
+
+            // Update search input and hide dropdown on selection
+            select.addEventListener('change', () => {
+                const selectedOption = select.options[select.selectedIndex];
+                if (selectedOption) {
+                    searchInput.value = selectedOption.textContent;
+                    select.style.display = 'none';
+                    dropdown.classList.remove('active');
+                    updateConversion();
+                }
+            });
+
+            // Prevent dropdown from closing when clicking inside
+            select.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+            });
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            populateCurrencyDropdowns();
+            initialize();
+        });
+    </script>
+</body>
+</html> 

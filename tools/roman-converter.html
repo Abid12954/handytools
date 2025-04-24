@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roman Numeral Converter - Handy Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .tool-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .converter-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #357abd;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .result-container {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box ul {
+            list-style-type: none;
+            padding-left: 1rem;
+        }
+
+        .info-box li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1><i class="fas fa-sort-numeric-down"></i> Roman Numeral Converter</h1>
+            <p>Convert between Roman numerals and Arabic numbers</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <h2 class="tool-title">Roman Numeral Converter</h2>
+            <p class="tool-description">Convert between Roman numerals and Arabic numbers (1-3999).</p>
+            
+            <div class="info-box">
+                <h3>Roman Numeral Rules</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i> I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000</li>
+                    <li><i class="fas fa-check"></i> Letters can be repeated up to 3 times</li>
+                    <li><i class="fas fa-check"></i> When a smaller numeral appears before a larger one, subtract it</li>
+                    <li><i class="fas fa-check"></i> Only I, X, and C can be used for subtraction</li>
+                </ul>
+            </div>
+            
+            <div class="converter-container">
+                <div class="input-group">
+                    <label for="arabicInput">Arabic Number (1-3999)</label>
+                    <input type="number" id="arabicInput" min="1" max="3999" placeholder="Enter a number between 1 and 3999">
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" id="toRomanBtn">
+                        <i class="fas fa-arrow-right"></i> To Roman
+                    </button>
+                    <button class="btn" id="toArabicBtn">
+                        <i class="fas fa-arrow-left"></i> To Arabic
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <label for="romanInput">Roman Numeral</label>
+                    <input type="text" id="romanInput" placeholder="Enter a Roman numeral" style="text-transform: uppercase;">
+                </div>
+
+                <button class="btn" id="copyBtn">
+                    <i class="fas fa-copy"></i> Copy Result
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Handy Tools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const romanNumerals = {
+            M: 1000,
+            CM: 900,
+            D: 500,
+            CD: 400,
+            C: 100,
+            XC: 90,
+            L: 50,
+            XL: 40,
+            X: 10,
+            IX: 9,
+            V: 5,
+            IV: 4,
+            I: 1
+        };
+
+        function toRoman(num) {
+            if (num < 1 || num > 3999) {
+                return "Number must be between 1 and 3999";
+            }
+
+            let result = '';
+            for (let [roman, value] of Object.entries(romanNumerals)) {
+                while (num >= value) {
+                    result += roman;
+                    num -= value;
+                }
+            }
+            return result;
+        }
+
+        function toArabic(str) {
+            str = str.toUpperCase();
+            let result = 0;
+            let i = 0;
+
+            while (i < str.length) {
+                const current = str[i];
+                const next = str[i + 1];
+                
+                if (next && romanNumerals[current] < romanNumerals[next]) {
+                    if (!['I', 'X', 'C'].includes(current)) {
+                        return "Invalid Roman numeral";
+                    }
+                    result += romanNumerals[next] - romanNumerals[current];
+                    i += 2;
+                } else {
+                    result += romanNumerals[current];
+                    i++;
+                }
+            }
+
+            // Validate the result
+            if (toRoman(result) !== str) {
+                return "Invalid Roman numeral";
+            }
+
+            return result;
+        }
+
+        function updateResult() {
+            const arabicInput = document.getElementById('arabicInput');
+            const romanInput = document.getElementById('romanInput');
+            
+            if (this.id === 'toRomanBtn') {
+                const num = parseInt(arabicInput.value);
+                if (isNaN(num) || num < 1 || num > 3999) {
+                    romanInput.value = "Please enter a number between 1 and 3999";
+                    return;
+                }
+                romanInput.value = toRoman(num);
+            } else if (this.id === 'toArabicBtn') {
+                const result = toArabic(romanInput.value);
+                arabicInput.value = result;
+            }
+        }
+
+        function clearInputs() {
+            document.getElementById('arabicInput').value = '';
+            document.getElementById('romanInput').value = '';
+        }
+
+        function copyResult() {
+            const arabicInput = document.getElementById('arabicInput');
+            const romanInput = document.getElementById('romanInput');
+            const textToCopy = arabicInput.value ? arabicInput.value : romanInput.value;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('toRomanBtn').addEventListener('click', updateResult);
+        document.getElementById('toArabicBtn').addEventListener('click', updateResult);
+        document.getElementById('clearBtn').addEventListener('click', clearInputs);
+        document.getElementById('copyBtn').addEventListener('click', copyResult);
+    </script>
+</body>
+</html> 
